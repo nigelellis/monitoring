@@ -2,27 +2,39 @@ services:
   telegraf:
     image: telegraf
     container_name: telegraf
+    hostname: telegraf
     restart: always
     env_file: .env
+    environment:
+      - HOST_ETC=/hostfs/etc
+      - HOST_PROC=/hostfs/proc
+      - HOST_SYS=/hostfs/sys
+      - HOST_VAR=/hostfs/var
+      - HOST_RUN=/hostfs/run
+      - HOST_MOUNT_PREFIX=/hostfs
     volumes:
-      - ./telegraf/telegraf.conf:/etc/telegraf/telegraf.conf:ro  # Mount the Telegraf configuration file
+      - ./telegraf/telegraf.conf:/etc/telegraf/telegraf.conf:ro
       - ./telegraf/ups-status.sh:/etc/telegraf/ups-status.sh:ro
-      - /var/run/docker.sock:/var/run/docker.sock:ro  # Mount the Docker socket to collect Docker metrics
+      - /var/run/docker.sock:/var/run/docker.sock:ro
       - /var/run/utmp:/var/run/utmp:ro
-    depends_on: []
-    # - influxdb
-    links: []
-    # - influxdb
+      - /sys/fs/cgroup/:/hostfs/sys/fs/cgroup:ro
+      - /etc/:/hostfs/etc:ro
+      - /proc/:/hostfs/proc:ro
+      - /var/:/hostfs/var:ro
+      - /run/:/hostfs/run:ro
+    depends_on:
+      - influxdb
     ports:
-      - '8125:8125'  # Expose Telegraf's StatsD port
+      - '8125:8125'
     privileged: true
     networks:
-      - monitoring  # Connect the Telegraf container to the monitoring network
+      - monitoring
     entrypoint: ["bash", "-c", "echo 'installing UPS tools: nut' && apt-get -qq update > /dev/null && apt-get -qq install nut > /dev/null && /usr/bin/telegraf"]
 
   influxdb:
     image: influxdb
     container_name: influxdb
+    hostname: influxdb
     restart: always
     env_file: .env
     environment:
@@ -35,14 +47,13 @@ services:
       - 8083:8083
     volumes:
       - influxdb_data:/var/lib/influxdb2
-      # - influxdb_data:/var/lib/influxdb  # Mount the InfluxDB data directory
-      # - ./data/influxdb:/var/lib/influxdb  # Mount the InfluxDB data directory
     networks:
-      - monitoring  # Connect the InfluxDB container to the monitoring network
+      - monitoring
 
   grafana:
     image: grafana/grafana-enterprise
     container_name: grafana
+    hostname: grafana
     restart: always
     depends_on:
       - influxdb
@@ -50,20 +61,20 @@ services:
     environment:
       - GF_SECURITY_ADMIN_USER=admin
       - GF_SECURITY_ADMIN_PASSWORD=admin
-    # user: 1002:1002
+    # user: '1002:1002'
     links:
       - influxdb
     ports:
-      - '3000:3000'  # Expose Grafana on port 3000
+      - '3000:3000'
     volumes:
-      - grafana_data:/var/lib/grafana  # Mount the Grafana data directory
-      # - ./data/grafana:/var/lib/grafana
+      - grafana_data:/var/lib/grafana
     networks:
-      - monitoring  # Connect the Grafana container to the monitoring network
+      - monitoring
 
   vuegraf:
     image: jertel/vuegraf
     container_name: vuegraf
+    hostname: vuegraf
     restart: always
     depends_on:
       - influxdb
@@ -79,4 +90,4 @@ volumes:
 
 networks:
   monitoring:
-    external: true  # Use an external network named 'monitoring'
+    external: true
