@@ -1,0 +1,104 @@
+{
+    "influxDb": {
+        "version": 2,
+        "url": "http://influxdb:8086",
+        "org": "monitoring",
+        "bucket": "monitoring",
+        "token": "${TELEGRAF_TOKEN}",
+        "reset": false
+    },
+    "accounts": [
+        {
+            "name": "Redmond",
+            "email": "${VUEGRAF_LOGIN}",
+            "password": "${VUEGRAF_PWD}",
+            "devices": [
+                {
+                    "name": "Office Solar Panel",
+                    "channels": [
+                        "South Outlets",
+                        "East Outlets",
+                        "None 3",
+                        "None 4",
+                        "None 5",
+                        "None 6",
+                        "None 7",
+                        "None 8",
+                        "None 9",
+                        "None 10",
+                        "None 11",
+                        "None 12",
+                        "None 13",
+                        "None 14",
+                        "None 15",
+                        "None 16"
+                    ]
+                },
+                {
+                    "name": "House Right Panel",
+                    "channels": [
+                        "Well 1",
+                        "Well 2",
+                        "Hotwater 1",
+                        "Aux Heat",
+                        "Extension HVAC and Tub",
+                        "Living & Dining",
+                        "Hall Lights",
+                        "Oven",
+                        "Wine Cooler 1",
+                        "Wine Cooler 2",
+                        "Hotwater 2",
+                        "None",
+                        "None",
+                        "None",
+                        "None",
+                        "None"                 
+                    ]
+                },
+                {
+                    "name": "House Right Panel",
+                    "channels": [
+                        "Well 1",
+                        "Well 2",
+                        "Hotwater 1",
+                        "Aux Heat",
+                        "Extension HVAC and Tub",
+                        "Living & Dining",
+                        "Hall Lights",
+                        "Oven",
+                        "Wine Cooler 1",
+                        "Wine Cooler 2",
+                        "Hotwater 2",
+                        "None",
+                        "None",
+                        "None",
+                        "None",
+                        "None"                 
+                    ]
+                },
+                {
+                    "name": "House Left Panel",
+                    "channels": [
+                        "Heat Pump 1 (1)",
+                        "Heat Pump 2 (2)",
+                        "Fridge",
+                        "Septic",
+                        "Pond",
+                        "Guest Bath Heat",
+                        "Media Outlet",
+                        "Wine Storage",
+                        "Kitchen B",
+                        "Living Outlets",
+                        "Dining Outlets",
+                        "Main Floor Lights",
+                        "Septic Pump",
+                        "None (14)",
+                        "None (15)",
+                        "None (16)",
+                        "Heat Pump (97)"
+                    ]
+                }
+            ]
+        }
+    ]
+}
