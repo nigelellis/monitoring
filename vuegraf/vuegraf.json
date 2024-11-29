@@ -1,10 +1,10 @@
 {
     "influxDb": {
-        "version": 2,
+        "version": 1,
         "url": "http://influxdb:8086",
-        "org": "monitoring",
-        "bucket": "monitoring",
-        "token": "${TELEGRAF_TOKEN}",
+        "user": "${INFLUXDB_USER}",
+        "password": "${INFLUXDB_USER_PASSWORD}",
+        "database": "monitoring",
         "reset": false
     },
     "accounts": [
