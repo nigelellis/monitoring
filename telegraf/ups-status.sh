@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 UPS=ups
-HOST=172.20.0.35
+HOST=$1
+NAME=$2
 
 STATS=$( \
   upsc ups@${HOST} 2> /dev/null | \
@@ -9,4 +10,4 @@ STATS=$( \
   tr \\n , | \
   sed "s/,$//g" \
 )
-echo ups,ups_name=${UPS},host=${HOST} ${STATS}
+echo ups,ups_name=${UPS},host=${NAME} ${STATS}

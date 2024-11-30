@@ -29,7 +29,10 @@ services:
     privileged: true
     networks:
       - monitoring
-    entrypoint: ["bash", "-c", "echo 'installing UPS tools: nut' && apt-get -qq update > /dev/null && apt-get -qq install nut > /dev/null && /usr/bin/telegraf"]
+    entrypoint:
+      - "bash"
+      - "-c"
+      - "echo 'installing UPS tools: nut' && apt-get -qq update > /dev/null && apt-get -qq install nut > /dev/null && echo 'Adding CAP_NET_RAW to telegraf' && setcap cap_net_raw+ep /usr/bin/telegraf && /usr/bin/telegraf"
 
   influxdb:
     image: influxdb:1.11.8-alpine
