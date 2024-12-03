@@ -22,6 +22,10 @@ services:
       - /proc/:/hostfs/proc:ro
       - /var/:/hostfs/var:ro
       - /run/:/hostfs/run:ro
+
+      # enable mDNS resolution: also requires package `avahi-utils`
+      - /var/run/dbus:/var/run/dbus
+      - /var/run/avahi-daemon/socket:/var/run/avahi-daemon/socket
     depends_on:
       - influxdb
     ports:
@@ -32,7 +36,7 @@ services:
     entrypoint:
       - "bash"
       - "-c"
-      - "echo 'installing UPS tools: nut' && apt-get -qq update > /dev/null && apt-get -qq install nut > /dev/null && echo 'Adding CAP_NET_RAW to telegraf' && setcap cap_net_raw+ep /usr/bin/telegraf && /usr/bin/telegraf"
+      - "echo 'installing UPS and mDNS tools' && apt-get -qq update > /dev/null && apt-get -qq install nut avahi-utils > /dev/null && echo 'Adding CAP_NET_RAW to telegraf' && setcap cap_net_raw+ep /usr/bin/telegraf && /usr/bin/telegraf"
 
   influxdb:
     image: influxdb:1.11.8-alpine
